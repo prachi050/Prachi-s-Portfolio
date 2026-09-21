@@ -1,0 +1,11 @@
+Portfolio captions (one sentence per image)
+
+studio-pap-1-login.jpg: A clean sign-in screen gets designers into the workspace quickly and sets the visual identity for the whole app.
+studio-pap-2-dashboard.jpg: The dashboard is home base for capturing screens, uploading designs, and reopening past analyses and chats.
+studio-pap-3-analysis.jpg: Screenshots become critiques scored on accessibility, hierarchy, typography, spacing, and color, with a top priority to fix first.
+studio-pap-4-conversation.jpg: The assistant remembers the design under review, so follow-up questions continue the review instead of restarting it.
+studio-pap-5-voice.jpg: Speech is transcribed in real time, so designers can ask follow-up questions hands-free.
+studio-pap-6-assistant.jpg: A floating assistant stays available while you work in other apps and answers spoken questions.
+studio-pap-7-pdf-report.jpg: Findings, design scores, and recommendations export as a structured PDF for documentation and stakeholders.
+studio-pap-8-light-theme.jpg: Multiple themes, including this light one, change the look without changing layout, hierarchy, or function.
+photography-site.jpg: The site presents my photographs of New York buildings alongside a short account of how I make them.
