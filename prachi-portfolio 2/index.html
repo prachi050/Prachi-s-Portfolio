@@ -11,19 +11,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400&display=swap" rel="stylesheet">
 
 <style>
-  
+  /* ---------- Tokens ---------- */
   :root {
     --paper: #ffffff;
     --ink: #000000;
     --mute: #4d4d4d;
-    --blue: #2436d8;         
+    --blue: #2436d8;          /* accent: change this one value to restyle links and buttons */
     --rule: 2px solid var(--ink);
 
     --sans: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
     --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   }
 
-  
+  /* ---------- Base (mobile first: everything is one column) ---------- */
   *, *::before, *::after { box-sizing: border-box; }
 
   html { scroll-behavior: smooth; }
@@ -48,7 +48,7 @@
 
   .wrap { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
 
-  
+  /* ---------- Header ---------- */
   .site-header { border-bottom: var(--rule); }
   .site-header .wrap {
     display: flex; flex-wrap: wrap; align-items: baseline;
@@ -60,7 +60,7 @@
   .nav a { text-decoration: none; padding: .25rem 0; border-bottom: 2px solid transparent; }
   .nav a:hover { border-bottom-color: var(--blue); }
 
-  
+  /* ---------- Hero ---------- */
   .hero { display: grid; gap: 2rem; padding: 2.5rem 0 3rem; }
   .hero h1 {
     font-weight: 800;
@@ -78,11 +78,11 @@
   }
   .button:hover { background: var(--blue); color: var(--paper); }
 
-  
+  /* ---------- Sections ---------- */
   .section { display: grid; gap: 1.5rem; padding: 2.5rem 0 3.5rem; border-top: var(--rule); }
   .section > h2 { font-size: 1.75rem; font-weight: 800; letter-spacing: -.01em; }
 
- 
+  /* Projects */
   .projects { display: grid; gap: 2rem; grid-template-columns: 1fr; }
   .project { margin: 0; }
   .project img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border: var(--rule); margin-bottom: .9rem; }
@@ -90,7 +90,7 @@
   .project p { color: var(--mute); margin: 0; }
 
 
-  
+  /* Case study blocks */
   .lede { font-size: 1.25rem; line-height: 1.5; max-width: 62ch; margin-bottom: 1.5rem; }
   .facts { display: grid; gap: 1rem 2rem; grid-template-columns: 1fr; margin: 0 0 2.25rem; padding: 1.25rem 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
   .facts dt { font-family: var(--sans); font-weight: 700; }
@@ -99,11 +99,23 @@
   .pair h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: .4rem; }
   .pair p { margin: 0; }
 
- 
+  /* Lighter spotlight layout for smaller, Figma-only projects */
   .spotlight { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
   .spotlight img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border: var(--rule); }
   .spotlight-shots { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); margin-top: 1rem; }
   .spotlight-shots img { width: 100%; height: auto; aspect-ratio: 9 / 19; object-fit: cover; border: var(--rule); }
+
+  /* Process section: hand-drawn wireframes shown alongside final screens */
+  .process { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--ink); }
+  .process h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: .4rem; }
+  .process p { margin: 0 0 1rem; }
+  .process-shots { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
+  .process-shots figure { margin: 0; }
+  .process-shots img { width: 100%; height: auto; object-fit: contain; background: #fff; border: var(--rule); }
+  .process-shots figcaption { margin-top: .4rem; font-family: var(--sans); font-size: .85rem; color: var(--mute); }
+  @media (min-width: 760px) {
+    .process-shots { grid-template-columns: repeat(4, 1fr); }
+  }
 
 
   .split { display: grid; gap: 2rem; grid-template-columns: 1fr; }
@@ -119,7 +131,7 @@
   .photos { display: grid; gap: 1rem; grid-template-columns: 1fr; }
   .photos img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border: var(--rule); }
 
- 
+  /* Writing */
   .lists { display: grid; gap: 2.5rem; grid-template-columns: 1fr; }
   .lists h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: .75rem; }
   .lists li { border-top: 1px solid var(--ink); padding: .9rem 0; }
@@ -127,14 +139,14 @@
   .lists .title { font-family: var(--sans); font-weight: 600; display: block; }
   .lists .note { color: var(--mute); font-size: .95rem; }
 
-  
+  /* About + contact */
   .about-grid { display: grid; gap: 2rem; grid-template-columns: 1fr; }
   .contact dt { font-family: var(--sans); font-weight: 700; }
   .contact dd { margin: 0 0 1rem; }
 
   .site-footer { border-top: var(--rule); padding: 1.25rem 0 2rem; font-size: .95rem; color: var(--mute); }
 
-  
+  /* ---------- Tablet and up: projects and lists go multi-column ---------- */
   @media (min-width: 760px) {
     .wrap { padding: 0 2rem; }
     .projects { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
@@ -149,7 +161,7 @@
     .spotlight-shots { grid-template-columns: repeat(4, 1fr); }
   }
 
-  
+  /* ---------- Desktop: hero splits, section titles move to a left column ---------- */
   @media (min-width: 960px) {
     .hero { grid-template-columns: 5fr 6fr; gap: 3rem; align-items: stretch; padding: 3.5rem 0 4rem; }
     .hero .copy { align-self: end; }
@@ -189,7 +201,7 @@
       </div>
     </section>
 
-   
+    <!-- ===== STUDIO PAP CASE STUDY ===== -->
     <section class="section" id="studio-pap" aria-labelledby="studio-pap-title">
       <h2 id="studio-pap-title">Studio PAP</h2>
       <div class="case">
@@ -281,6 +293,7 @@
       </div>
     </section>
 
+    <!-- ===== ZENITH ===== -->
     <section class="section" id="zenith" aria-labelledby="zenith-title">
       <h2 id="zenith-title">Zenith</h2>
       <div class="case">
@@ -309,6 +322,29 @@
           <img src="zenith-food.jpg" width="608" height="1062" alt="Zenith food menu listing dishes like Pan Seared Salmon and Wagyu Beef Ribeye with prices">
           <img src="zenith-drinks.jpg" width="608" height="1062" alt="Zenith drinks menu listing cocktails and wines like Classic Martini and Bordeaux Reserve with prices">
           <img src="zenith-reservation.jpg" width="610" height="1058" alt="Zenith reservation screen with a link to book through Resy and the reservation policy">
+        </div>
+
+        <div class="process">
+          <h3>Process</h3>
+          <p>Before opening Figma, I sketched the site map and each screen by hand, working out navigation and layout on paper first.</p>
+          <div class="process-shots">
+            <figure>
+              <img src="zenith-wf-home.jpg" width="720" height="1000" alt="Hand-drawn wireframe of the Zenith home screen, sketching the navigation bar and the Food and Drinks cards">
+              <figcaption>Sketch — home screen</figcaption>
+            </figure>
+            <figure>
+              <img src="zenith-wf-food.jpg" width="600" height="700" alt="Hand-drawn wireframe of the Zenith food menu screen">
+              <figcaption>Sketch — food menu</figcaption>
+            </figure>
+            <figure>
+              <img src="zenith-wf-drinks.jpg" width="550" height="820" alt="Hand-drawn wireframe of the Zenith drinks menu screen">
+              <figcaption>Sketch — drinks menu</figcaption>
+            </figure>
+            <figure>
+              <img src="zenith-wf-reservation.jpg" width="670" height="810" alt="Hand-drawn wireframe of the Zenith reservation screen">
+              <figcaption>Sketch — reservation</figcaption>
+            </figure>
+          </div>
         </div>
       </div>
     </section>
@@ -343,10 +379,33 @@
           <img src="nova-fitness.jpg" width="924" height="2000" alt="Nova onboarding screen asking for current fitness level, showing a warm gradient card labeled Moderate Intensity">
           <img src="nova-complete.jpg" width="378" height="805" alt="Nova onboarding completion screen reading You are ready to go with a Get Started button">
         </div>
+
+        <div class="process">
+          <h3>Process</h3>
+          <p>The onboarding flow started as hand-drawn wireframes mapping out every screen, from welcome through account setup, before any visual design decisions were made.</p>
+          <div class="process-shots">
+            <figure>
+              <img src="nova-wf-welcome.jpg" width="600" height="770" alt="Hand-drawn wireframe of the Nova welcome screen">
+              <figcaption>Sketch — welcome screen</figcaption>
+            </figure>
+            <figure>
+              <img src="nova-wf-interests.jpg" width="520" height="554" alt="Hand-drawn wireframe of the Nova craft your perfect fit interests grid screen">
+              <figcaption>Sketch — interests grid</figcaption>
+            </figure>
+            <figure>
+              <img src="nova-wf-fitness.jpg" width="500" height="600" alt="Hand-drawn wireframe of the Nova current fitness level screen">
+              <figcaption>Sketch — fitness level</figcaption>
+            </figure>
+            <figure>
+              <img src="nova-wf-complete.jpg" width="550" height="790" alt="Hand-drawn wireframe of the Nova onboarding completion screen">
+              <figcaption>Sketch — completion screen</figcaption>
+            </figure>
+          </div>
+        </div>
       </div>
     </section>
 
-   
+    <!-- ===== PHOTOGRAPHY ===== -->
     <section class="section" id="photography" aria-labelledby="photography-title">
       <h2 id="photography-title">Photography</h2>
       <div class="case">
@@ -399,7 +458,7 @@
       </div>
     </section>
 
-    
+    <!-- ===== ARTICLES AND PRESENTATIONS ===== -->
     <section class="section" id="writing" aria-labelledby="writing-title">
       <h2 id="writing-title">Articles &amp; talks</h2>
       <div class="lists">
@@ -412,7 +471,7 @@
       </div>
     </section>
 
-    
+    <!-- ===== ABOUT AND CONTACT ===== -->
     <section class="section" id="about" aria-labelledby="about-title">
       <h2 id="about-title">About</h2>
       <div class="about-grid">
