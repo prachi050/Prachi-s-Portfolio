@@ -11,19 +11,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400&display=swap" rel="stylesheet">
 
 <style>
-  
+  /* ---------- Tokens ---------- */
   :root {
     --paper: #ffffff;
     --ink: #000000;
     --mute: #4d4d4d;
-    --blue: #2436d8;          
+    --blue: #2436d8;          /* accent: change this one value to restyle links and buttons */
     --rule: 2px solid var(--ink);
 
     --sans: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
     --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   }
 
-  
+  /* ---------- Base (mobile first: everything is one column) ---------- */
   *, *::before, *::after { box-sizing: border-box; }
 
   html { scroll-behavior: smooth; }
@@ -60,7 +60,7 @@
   .nav a { text-decoration: none; padding: .25rem 0; border-bottom: 2px solid transparent; }
   .nav a:hover { border-bottom-color: var(--blue); }
 
- 
+  /* ---------- Hero ---------- */
   .hero { display: grid; gap: 2rem; padding: 2.5rem 0 3rem; }
   .hero h1 {
     font-weight: 800;
@@ -78,11 +78,11 @@
   }
   .button:hover { background: var(--blue); color: var(--paper); }
 
-  
+  /* ---------- Sections ---------- */
   .section { display: grid; gap: 1.5rem; padding: 2.5rem 0 3.5rem; border-top: var(--rule); }
   .section > h2 { font-size: 1.75rem; font-weight: 800; letter-spacing: -.01em; }
 
- 
+  /* Projects */
   .projects { display: grid; gap: 2rem; grid-template-columns: 1fr; }
   .project { margin: 0; }
   .project img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border: var(--rule); margin-bottom: .9rem; }
@@ -90,7 +90,7 @@
   .project p { color: var(--mute); margin: 0; }
 
 
-  
+  /* Case study blocks */
   .lede { font-size: 1.25rem; line-height: 1.5; max-width: 62ch; margin-bottom: 1.5rem; }
   .facts { display: grid; gap: 1rem 2rem; grid-template-columns: 1fr; margin: 0 0 2.25rem; padding: 1.25rem 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
   .facts dt { font-family: var(--sans); font-weight: 700; }
@@ -98,6 +98,12 @@
   .pair { display: grid; gap: 1.5rem; grid-template-columns: 1fr; margin-bottom: 2.5rem; }
   .pair h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: .4rem; }
   .pair p { margin: 0; }
+
+  /* Lighter spotlight layout for smaller, Figma-only projects */
+  .spotlight { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+  .spotlight img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border: var(--rule); }
+  .spotlight-shots { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); margin-top: 1rem; }
+  .spotlight-shots img { width: 100%; height: auto; aspect-ratio: 9 / 19; object-fit: cover; border: var(--rule); }
 
 
   .split { display: grid; gap: 2rem; grid-template-columns: 1fr; }
@@ -113,7 +119,7 @@
   .photos { display: grid; gap: 1rem; grid-template-columns: 1fr; }
   .photos img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border: var(--rule); }
 
-  
+  /* Writing */
   .lists { display: grid; gap: 2.5rem; grid-template-columns: 1fr; }
   .lists h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: .75rem; }
   .lists li { border-top: 1px solid var(--ink); padding: .9rem 0; }
@@ -121,14 +127,14 @@
   .lists .title { font-family: var(--sans); font-weight: 600; display: block; }
   .lists .note { color: var(--mute); font-size: .95rem; }
 
- 
+  /* About + contact */
   .about-grid { display: grid; gap: 2rem; grid-template-columns: 1fr; }
   .contact dt { font-family: var(--sans); font-weight: 700; }
   .contact dd { margin: 0 0 1rem; }
 
   .site-footer { border-top: var(--rule); padding: 1.25rem 0 2rem; font-size: .95rem; color: var(--mute); }
 
- 
+  /* ---------- Tablet and up: projects and lists go multi-column ---------- */
   @media (min-width: 760px) {
     .wrap { padding: 0 2rem; }
     .projects { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
@@ -140,9 +146,10 @@
     .photos { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
     .photos img { aspect-ratio: 2 / 3; }
     .pair { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
+    .spotlight-shots { grid-template-columns: repeat(4, 1fr); }
   }
 
- 
+  /* ---------- Desktop: hero splits, section titles move to a left column ---------- */
   @media (min-width: 960px) {
     .hero { grid-template-columns: 5fr 6fr; gap: 3rem; align-items: stretch; padding: 3.5rem 0 4rem; }
     .hero .copy { align-self: end; }
@@ -162,6 +169,8 @@
     <a class="brand" href="#top">Prachi Patel</a>
     <nav class="nav" aria-label="Main">
       <a href="#studio-pap">Studio PAP</a>
+      <a href="#zenith">Zenith</a>
+      <a href="#nova">Nova</a>
       <a href="#photography">Photography</a>
       <a href="#writing">Articles &amp; talks</a>
       <a href="#about">About</a>
@@ -181,7 +190,7 @@
       </div>
     </section>
 
-    
+    <!-- ===== STUDIO PAP CASE STUDY ===== -->
     <section class="section" id="studio-pap" aria-labelledby="studio-pap-title">
       <h2 id="studio-pap-title">Studio PAP</h2>
       <div class="case">
@@ -273,7 +282,70 @@
       </div>
     </section>
 
-   
+    <!-- ===== ZENITH ===== -->
+    <section class="section" id="zenith" aria-labelledby="zenith-title">
+      <h2 id="zenith-title">Zenith</h2>
+      <div class="case">
+        <p class="lede">A high-end restaurant digital menu concept, designed to feel calm and considered rather than busy or promotional.</p>
+
+        <dl class="facts">
+          <div><dt>Role</dt><dd>UI/UX design</dd></div>
+          <div><dt>Type</dt><dd>Personal design project</dd></div>
+          <div><dt>Platform</dt><dd>Mobile &amp; tablet menu concept</dd></div>
+          <div><dt>Built with</dt><dd>Figma</dd></div>
+        </dl>
+
+        <div class="pair">
+          <div>
+            <h3>The problem</h3>
+            <p>Most restaurant menus try to do too much at once, heavy imagery, pricing call-outs, promotions, all competing for attention on a small screen.</p>
+          </div>
+          <div>
+            <h3>The approach</h3>
+            <p>I stripped away the usual visual clutter and let typography, spacing, and restraint carry the design, so each dish gets room to feel considered rather than like one line in a long list.</p>
+          </div>
+        </div>
+
+        <div class="spotlight">
+          <img src="zenith-cover.jpg" width="1400" height="933" alt="Zenith restaurant menu design, showing a clean, minimal layout with generous whitespace">
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NOVA ===== -->
+    <section class="section" id="nova" aria-labelledby="nova-title">
+      <h2 id="nova-title">Nova</h2>
+      <div class="case">
+        <p class="lede">A wellness app concept bringing sleep podcasts, weight tracking, and journaling into one place, without it feeling like a pile of unrelated tools.</p>
+
+        <dl class="facts">
+          <div><dt>Role</dt><dd>UI/UX design</dd></div>
+          <div><dt>Type</dt><dd>Personal design project</dd></div>
+          <div><dt>Platform</dt><dd>Mobile app concept</dd></div>
+          <div><dt>Built with</dt><dd>Figma</dd></div>
+        </dl>
+
+        <div class="pair">
+          <div>
+            <h3>The problem</h3>
+            <p>Combining sleep, weight tracking, and journaling into a single app risked feeling like four unrelated features bolted together, each with its own visual logic.</p>
+          </div>
+          <div>
+            <h3>The approach</h3>
+            <p>I took structural inspiration from print journalism, using the same underlying layout across all four sections, so the app reads as one coherent product instead of a random toolkit.</p>
+          </div>
+        </div>
+
+        <div class="spotlight-shots">
+          <img src="nova-welcome.jpg" width="378" height="805" alt="Nova welcome screen with the app logo and the line Design smarter, faster, and healthier">
+          <img src="nova-interests.jpg" width="924" height="2000" alt="Nova onboarding screen titled Craft your perfect fit with a grid of interest icons like Nutrition, Sports, and Sleep">
+          <img src="nova-fitness.jpg" width="924" height="2000" alt="Nova onboarding screen asking for current fitness level, showing a warm gradient card labeled Moderate Intensity">
+          <img src="nova-complete.jpg" width="378" height="805" alt="Nova onboarding completion screen reading You are ready to go with a Get Started button">
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PHOTOGRAPHY ===== -->
     <section class="section" id="photography" aria-labelledby="photography-title">
       <h2 id="photography-title">Photography</h2>
       <div class="case">
@@ -326,7 +398,7 @@
       </div>
     </section>
 
-    
+    <!-- ===== ARTICLES AND PRESENTATIONS ===== -->
     <section class="section" id="writing" aria-labelledby="writing-title">
       <h2 id="writing-title">Articles &amp; talks</h2>
       <div class="lists">
@@ -339,7 +411,7 @@
       </div>
     </section>
 
-    
+    <!-- ===== ABOUT AND CONTACT ===== -->
     <section class="section" id="about" aria-labelledby="about-title">
       <h2 id="about-title">About</h2>
       <div class="about-grid">
