@@ -80,7 +80,19 @@
 
   /* ---------- Sections ---------- */
   .section { display: grid; gap: 1.5rem; padding: 2.5rem 0 3.5rem; border-top: var(--rule); }
-  .section > h2 { font-size: 1.75rem; font-weight: 800; letter-spacing: -.01em; }
+  .section > h2 { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; font-size: 1.75rem; font-weight: 800; letter-spacing: -.01em; }
+
+  /* Status badges next to project titles */
+  .badge {
+    display: inline-block; font-family: var(--sans); font-size: .65rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .04em; padding: .3rem .55rem; border: 1px solid var(--ink);
+  }
+  .badge-shipped { background: var(--ink); color: var(--paper); }
+  .badge-concept { color: var(--mute); border-color: var(--mute); }
+
+  /* Hero visual: preview strip of work */
+  .hero-visual { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; }
+  .hero-visual img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border: var(--rule); }
 
   /* Projects */
   .projects { display: grid; gap: 2rem; grid-template-columns: 1fr; }
@@ -198,14 +210,19 @@
     <section class="hero">
       <div class="copy">
         <h1>Prachi Patel</h1>
-        <p class="tagline">Designer, developer, and photographer in New York City. I build AI-powered tools and photograph architecture.</p>
+        <p class="tagline">Product designer who codes, based in New York City. I design and ship AI-powered tools, and photograph architecture on the side.</p>
         <a class="button" href="resume.pdf" target="_blank" rel="noopener">Resume ↓</a>
+      </div>
+      <div class="hero-visual">
+        <img src="studio-pap-2-dashboard.jpg" alt="Studio PAP dashboard preview">
+        <img src="zenith-home.jpg" alt="Zenith home screen preview">
+        <img src="nova-fitness.jpg" alt="Nova onboarding screen preview">
       </div>
     </section>
 
     <!-- ===== STUDIO PAP CASE STUDY ===== -->
     <section class="section" id="studio-pap" aria-labelledby="studio-pap-title">
-      <h2 id="studio-pap-title">Studio PAP</h2>
+      <h2 id="studio-pap-title">Studio PAP <span class="badge badge-shipped">Shipped product</span></h2>
       <div class="case">
         <p class="lede">An AI-powered design workspace for professional UI review. Designers capture a screen, get structured feedback, keep the conversation going, and export a report without leaving their workflow.</p>
 
@@ -297,7 +314,7 @@
 
     <!-- ===== ZENITH ===== -->
     <section class="section" id="zenith" aria-labelledby="zenith-title">
-      <h2 id="zenith-title">Zenith</h2>
+      <h2 id="zenith-title">Zenith <span class="badge badge-concept">Concept project</span></h2>
       <div class="case">
         <p class="lede">A high-end restaurant digital menu concept, designed to feel calm and considered rather than busy or promotional.</p>
 
@@ -353,7 +370,7 @@
 
     <!-- ===== NOVA ===== -->
     <section class="section" id="nova" aria-labelledby="nova-title">
-      <h2 id="nova-title">Nova</h2>
+      <h2 id="nova-title">Nova <span class="badge badge-concept">Concept project</span></h2>
       <div class="case">
         <p class="lede">A wellness app concept bringing sleep podcasts, weight tracking, and journaling into one place, without it feeling like a pile of unrelated tools.</p>
 
@@ -440,8 +457,6 @@
         <dl class="contact" id="contact">
           <dt>Email</dt>
           <dd><a href="mailto:patelprachi670@gmail.com">patelprachi670@gmail.com</a></dd>
-          <dt>Photography</dt>
-          <dd><a href="https://prachi-photography.vercel.app/">prachi-photography.vercel.app</a></dd>
         </dl>
       </div>
     </section>
