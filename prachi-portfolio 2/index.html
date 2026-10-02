@@ -94,6 +94,18 @@
   .hero-visual { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; }
   .hero-visual img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border: var(--rule); }
 
+  /* Hero stage: 3D panel view, replaces .hero-visual when WebGL + motion allow it.
+     The stage takes its size from the (hidden, not removed) image grid beneath
+     it, so it always matches whatever size that grid would have rendered at. */
+  .hero-stage { position: relative; min-width: 0; }
+  .hero-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .hero-stage .stage-hint {
+    position: absolute; left: .6rem; bottom: .55rem;
+    font-family: var(--sans); font-size: .68rem; font-weight: 600;
+    letter-spacing: .02em; color: var(--mute);
+    transition: opacity .4s ease; pointer-events: none;
+  }
+
   /* Projects */
   .projects { display: grid; gap: 2rem; grid-template-columns: 1fr; }
   .project { margin: 0; }
@@ -213,10 +225,12 @@
         <p class="tagline">Product designer who codes, based in New York City. I design and ship AI-powered tools, and photograph architecture on the side.</p>
         <a class="button" href="resume.pdf" target="_blank" rel="noopener">Resume ↓</a>
       </div>
-      <div class="hero-visual">
-        <img src="studio-pap-2-dashboard.jpg" alt="Studio PAP dashboard preview">
-        <img src="zenith-home.jpg" alt="Zenith home screen preview">
-        <img src="nova-fitness.jpg" alt="Nova onboarding screen preview">
+      <div class="hero-stage" id="heroStage">
+        <div class="hero-visual" id="heroVisual">
+          <img src="studio-pap-2-dashboard.jpg" alt="Studio PAP dashboard preview">
+          <img src="zenith-home.jpg" alt="Zenith home screen preview">
+          <img src="nova-fitness.jpg" alt="Nova onboarding screen preview">
+        </div>
       </div>
     </section>
 
@@ -467,6 +481,200 @@
 <footer class="site-footer">
   <div class="wrap">&copy; 2026 Prachi Patel</div>
 </footer>
+
+<script>
+/* Hero stage: turns the three hero preview images into floating, tiltable
+   3D panels that link to their case studies. Falls back to the plain
+   .hero-visual grid when WebGL is unavailable or the visitor prefers
+   reduced motion, so nothing here is load-bearing for the page. */
+(function () {
+  "use strict";
+
+  var stageEl = document.getElementById("heroStage");
+  var gridEl = document.getElementById("heroVisual");
+  if (!stageEl || !gridEl) return;
+
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion) return;
+
+  function supportsWebGL() {
+    try {
+      var c = document.createElement("canvas");
+      return !!(window.WebGLRenderingContext &&
+        (c.getContext("webgl") || c.getContext("experimental-webgl")));
+    } catch (e) {
+      return false;
+    }
+  }
+  if (!supportsWebGL()) return;
+
+  var loaderScript = document.createElement("script");
+  loaderScript.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+  loaderScript.onload = initStage;
+  document.body.appendChild(loaderScript);
+
+  function initStage() {
+    if (!window.THREE) return;
+
+    var projects = [
+      { src: "studio-pap-2-dashboard.jpg", hash: "#studio-pap" },
+      { src: "zenith-home.jpg", hash: "#zenith" },
+      { src: "nova-fitness.jpg", hash: "#nova" }
+    ];
+
+    var renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    } catch (e) {
+      return; // keep the plain image grid
+    }
+
+    gridEl.style.visibility = "hidden";
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+    camera.position.set(0, 0, 9);
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    if (renderer.outputEncoding !== undefined) {
+      renderer.outputEncoding = THREE.sRGBEncoding;
+    }
+    stageEl.appendChild(renderer.domElement);
+
+    var hint = document.createElement("div");
+    hint.className = "stage-hint";
+    hint.textContent = "hover to explore · click to open";
+    stageEl.appendChild(hint);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.95));
+    var dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    dirLight.position.set(2, 3, 5);
+    scene.add(dirLight);
+
+    var group = new THREE.Group();
+    scene.add(group);
+
+    var loader = new THREE.TextureLoader();
+    var hitPlanes = [];
+
+    var panels = projects.map(function (p, i) {
+      var margin = 0.08;
+      var imgW = 2.4, imgH = 3.2;
+
+      var frame = new THREE.Mesh(
+        new THREE.PlaneGeometry(imgW + margin * 2, imgH + margin * 2),
+        new THREE.MeshBasicMaterial({ color: 0x000000 })
+      );
+      frame.position.z = -0.02;
+
+      var imgMat = new THREE.MeshStandardMaterial({
+        color: 0xe6e6e6,
+        roughness: 0.9,
+        side: THREE.DoubleSide
+      });
+      var img = new THREE.Mesh(new THREE.PlaneGeometry(imgW, imgH), imgMat);
+
+      loader.load(p.src, function (tex) {
+        if (tex.encoding !== undefined) tex.encoding = THREE.sRGBEncoding;
+        imgMat.map = tex;
+        imgMat.color.set(0xffffff);
+        imgMat.needsUpdate = true;
+      });
+
+      var holder = new THREE.Group();
+      holder.add(frame);
+      holder.add(img);
+
+      var spread = 2.35;
+      holder.position.set((i - 1) * spread, 0, -(i * 0.6));
+      holder.rotation.y = (i - 1) * -0.2;
+      holder.userData = {
+        baseZ: holder.position.z,
+        baseRotY: holder.rotation.y,
+        index: i,
+        hitPlane: img
+      };
+      group.add(holder);
+      hitPlanes.push(img);
+      return holder;
+    });
+
+    function resize() {
+      var w = stageEl.clientWidth, h = stageEl.clientHeight;
+      if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    var targetMouse = new THREE.Vector2(0, 0);
+    var mouse = new THREE.Vector2(0, 0);
+    var raycaster = new THREE.Raycaster();
+    var hasPointed = false;
+
+    function setPointer(x, y) {
+      var rect = stageEl.getBoundingClientRect();
+      targetMouse.x = ((x - rect.left) / rect.width) * 2 - 1;
+      targetMouse.y = -((y - rect.top) / rect.height) * 2 + 1;
+    }
+
+    stageEl.addEventListener("pointermove", function (e) {
+      hasPointed = true;
+      hint.style.opacity = "0";
+      setPointer(e.clientX, e.clientY);
+    });
+    stageEl.addEventListener("pointerleave", function () {
+      targetMouse.set(0, 0);
+    });
+    stageEl.addEventListener("click", function (e) {
+      setPointer(e.clientX, e.clientY);
+      raycaster.setFromCamera(targetMouse, camera);
+      var hits = raycaster.intersectObjects(hitPlanes);
+      if (hits.length) {
+        var idx = hitPlanes.indexOf(hits[0].object);
+        window.location.hash = projects[idx].hash;
+      }
+    });
+
+    var clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      var t = clock.getElapsedTime();
+
+      mouse.x += (targetMouse.x - mouse.x) * 0.06;
+      mouse.y += (targetMouse.y - mouse.y) * 0.06;
+
+      group.rotation.y = mouse.x * 0.16;
+      group.rotation.x = -mouse.y * 0.06;
+
+      raycaster.setFromCamera(mouse, camera);
+      var hits = hasPointed ? raycaster.intersectObjects(hitPlanes) : [];
+      var hitObj = hits.length ? hits[0].object : null;
+
+      panels.forEach(function (holder) {
+        var d = holder.userData;
+        var isHover = d.hitPlane === hitObj;
+        var drift = Math.sin(t * 0.5 + d.index * 2) * 0.04;
+        var targetZ = d.baseZ + drift + (isHover ? 0.5 : 0);
+        var targetRotY = d.baseRotY + (isHover ? -mouse.x * 0.3 : 0);
+        var targetScale = isHover ? 1.05 : 1;
+
+        holder.position.z += (targetZ - holder.position.z) * 0.12;
+        holder.rotation.y += (targetRotY - holder.rotation.y) * 0.12;
+        var s = holder.scale.x + (targetScale - holder.scale.x) * 0.12;
+        holder.scale.set(s, s, s);
+      });
+
+      stageEl.style.cursor = hitObj ? "pointer" : "default";
+      renderer.render(scene, camera);
+    }
+    animate();
+  }
+})();
+</script>
 
 </body>
 </html>
