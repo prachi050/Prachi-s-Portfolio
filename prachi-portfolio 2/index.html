@@ -122,6 +122,7 @@ body{
 
 .vid{margin:14px 0 6px; display:flex; flex-direction:column; align-items:center; gap:8px}
 .vid video{width:min(100%,300px); aspect-ratio:630/1130; border-radius:11.6% / 6.5%; background:#FBF8F3; box-shadow:var(--shade); display:block}
+.vid.p45 video{width:min(100%,360px); aspect-ratio:4/5; border-radius:10px; background:#3B2A22}
 .vid p{margin:0; font-size:13px; color:var(--ink-2); text-align:center}
 </style>
 
@@ -171,7 +172,7 @@ function contactBlock(parent){
 var PROJECTS = [
   {
     id:"paper-and-pour", name:"Paper & Pour", views:["visual"], vo:-1, checksLabel:"Details",
-    video:{k:"paperpour", poster:"paperpour-poster", alt:"A six second logo animation: a drop falls, the ampersand appears, the words PAPER and POUR settle into place and the background turns from roast brown to paper.", cap:"A six second logo animation: a drop falls, the ampersand pops in and the name settles into place."},
+    video:{k:"paperpour", shape:"p45", poster:"paperpour-poster", alt:"A six second logo animation: a drop falls, the ampersand appears, the words PAPER and POUR settle into place and the background turns from roast brown to paper.", cap:"A six second logo animation: a drop falls, the ampersand pops in and the name settles into place."},
     photos:[{"k":"pp-concept-drip","alt":"Logo concept: dripper over a cup","cap":"Concept 2, drawn by me in Illustrator: a folded paper filter cone over a cup. It shows the paper and the pour in one mark."},{"k":"pp-concept-cup","alt":"Logo concept: origami cup","cap":"Concept 1, drawn by me in Illustrator: a paper cup folded like origami, with steam."},{"k":"pp-direction","alt":"Ampersand direction","cap":"A third direction, an ampersand mark with origin drops, explored with Claude (AI-assisted): primary logo, two set-aside options, marks, palette and type."},{"k":"pp-system","alt":"Both of my concepts on packaging","cap":"Both of my concepts on a bag, a cup and a tote, as close redraws of my marks. At small sizes the dripper stays clear and the folded cup fills in."},{"k":"pp-packaging","alt":"Packaging system","cap":"The packaging system for the ampersand direction: three origin bags, a cup, a shipping box and a tote, with a colored drop for each origin."},{"k":"pp-social","alt":"Six launch posts","cap":"Six launch posts in the same system: announcement, origin card, how-we-pour guide, quote, the bags and opening hours."}],
     line:"A brand identity and packaging system for a fictional New York coffee roaster, built around one ritual: paper filter, hot water, a slow pour.",
     checks:["Personal concept project: a fictional brand, not a real client","The origami-cup and dripper logo concepts are my own drawings, made in Illustrator","The ampersand direction, the packaging mockups, the social posts and the animation were built with Claude from my decisions, so they are AI-assisted work","Names and labels set in Georgia and in Corner Sans, a typeface I built in Glyphs","One color for each origin: a drop of gold, green or blue on every bag","Still in progress: my paper sketches and mood board are not added yet"],
@@ -358,7 +359,7 @@ function projectCard(p, startOpen){
   c.appendChild(el("h3",null,p.name));
   c.appendChild(el("p",null,p.line));
   if (p.video){
-    var vw = el("div","vid"), v = el("video");
+    var vw = el("div", p.video.shape ? "vid "+p.video.shape : "vid"), v = el("video");
     v.controls = true; v.muted = true; v.loop = true; v.playsInline = true; v.preload = "metadata"; v.poster = IMG[p.video.poster]; v.setAttribute("aria-label", p.video.alt);
     ["mp4","webm"].forEach(function(t){ var so = el("source"); so.src = VID[p.video.k+"-"+t]; so.type = "video/"+t; v.appendChild(so); });
     vw.appendChild(v); vw.appendChild(el("p",null,p.video.cap)); c.appendChild(vw);
